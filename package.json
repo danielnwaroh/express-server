@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start:car": "ts-node car-decorator.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.10",
@@ -14,6 +15,7 @@
     "@types/lodash": "^4.14.168",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "ts-node": "^9.1.1",

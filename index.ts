@@ -69,11 +69,11 @@ const users: IUser[] = [
   },
 ];
 
-app.get("/", (req, res) => {
+app.get("/", (req: any, res: any) => {
   res.send("Hello from Daniel's server!");
 });
 
-app.get("/morning", (req, res) => {
+app.get("/morning", (req: any, res: any) => {
   let name = req.query.name;
   const d = new Date();
   if (req.query.name) {
@@ -83,11 +83,11 @@ app.get("/morning", (req, res) => {
   }
 });
 
-app.get("/afternoon", (req, res) => {
+app.get("/afternoon", (req: any, res: any) => {
   res.send(`Hey! How's your day been today?`);
 });
 
-app.post("/user/register", jsonParser, (req, res) => {
+app.post("/user/register", jsonParser, (req: any, res: any) => {
   console.log(req.body.username);
   const jsonInfo = req.body;
   const someUser = _.find(users, { username: jsonInfo.username });
@@ -104,7 +104,7 @@ app.post("/user/register", jsonParser, (req, res) => {
   }
 });
 
-app.post("/user/login", (req, res) => {
+app.post("/user/login", (req: any, res: any) => {
   const { username, password } = req.body;
 
   const user = users.find((u) => {
@@ -125,12 +125,12 @@ app.post("/user/login", (req, res) => {
   }
 });
 
-app.post("/secretInfo", (req, res) => {
+app.post("/secretInfo", (req: any, res: any) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
-    jwt.verify(token, accessTokenSecret, (err, user) => {
+    jwt.verify(token, accessTokenSecret, (err: any, user: any) => {
       if (err) {
         res.send("You arent authorized to access this information");
         // return res.sendStatus(403);

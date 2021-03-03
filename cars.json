@@ -1,0 +1,6 @@
+[
+  { "make": "Ferrari", "speed": 100 },
+  { "make": "Toyota", "speed": 60 },
+  { "make": "Tesla", "speed": 10000 },
+  { "make": "BMW", "speed": 123 }
+]
