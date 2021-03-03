@@ -5,7 +5,7 @@ import _ from "lodash";
 import jwt from "jsonwebtoken";
 // import * as bcrypt from "bcrypt";
 import fs from "fs";
-
+import { isSome, Option, some, none } from "fp-ts/lib/Option";
 const app = express();
 const jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -16,7 +16,8 @@ console.log(cars);
 
 app.use(jsonParser);
 
-const protectedMethods = [];
+const accessTokenSecret =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5ueTAiLCJuYW1lIjoiSm9obiIsImlhdCI6MTYxMzUzNTc2OH0.lkocLW2KC-AYiwQVyQ61WxGo1sMZCWCVPj5ZCjj9BoY";
 
 function protect(
   target: any,
@@ -70,7 +71,15 @@ class Cars {
   @checkBody
   writeDB(dbFunc: any, data: string, dbName: string) {
     // console.log(dbName);
-    // dbFunc(dbName, data);
+    dbFunc(dbName, data);
+  }
+
+  authenticate(cookie: string): Option<string> {
+    console.log(cookie);
+    if (cookie === accessTokenSecret) return some(cookie);
+    else {
+      return none;
+    }
   }
 }
 const c = new Cars();
@@ -94,4 +103,15 @@ app.post("/write-db", jsonParser, (req: any, res: any) => {
   temp.push(req.body);
   c.writeDB(fs.writeFileSync, JSON.stringify(temp), "cars.json");
   res.send("Writing to DB");
+});
+
+app.get("/authentication", jsonParser, (req: any, res: any) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+  const a = c.authenticate(token);
+  if (isSome(a)) {
+    res.send("Sensitive info");
+  } else {
+    res.send("Auth failed");
+  }
 });
